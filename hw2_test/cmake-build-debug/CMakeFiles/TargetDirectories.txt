@@ -1,0 +1,4 @@
+D:/Games102/hw2_test/cmake-build-debug/CMakeFiles/hw2_test.dir
+D:/Games102/hw2_test/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+D:/Games102/hw2_test/cmake-build-debug/CMakeFiles/test.dir
+D:/Games102/hw2_test/cmake-build-debug/CMakeFiles/edit_cache.dir
