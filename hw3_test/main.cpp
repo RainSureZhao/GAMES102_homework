@@ -12,8 +12,8 @@
 #include "MathUtil.h"
 
 GLFWwindow *g_window = nullptr;
-int g_width = 2000;
-int g_height = 1500;
+int g_width = 1800;
+int g_height = 900;
 
 ImVec2 g_canvas_pos_ul = { 0.0f, 0.0f };
 ImVec2 g_canvas_pos_br = { 0.0f, 0.0f };
@@ -150,7 +150,7 @@ int main() {
 
     std::vector<float> in_pos_x;
     std::vector<float> in_pos_y;
-
+    
     bool inter_update = false;
     CurveData inter_uniform { IM_COL32(255, 50, 50, 255), IM_COL32(255, 80, 80, 255) };
     CurveData inter_chordal { IM_COL32(50, 255, 50, 255), IM_COL32(80, 255, 80, 255) };
@@ -288,9 +288,9 @@ int main() {
                 spline_update = true;
             } else if (is_hovered && ImGui::IsMouseClicked(ImGuiMouseButton_Right)) {
                 Eigen::Vector2f pos(io.MousePos.x - g_canvas_pos_ul.x, g_canvas_pos_br.y - io.MousePos.y);
-                size_t index = 0;
+                int index = 0;
                 float min_dist = std::numeric_limits<float>::max();
-                for (size_t i = 0; i < in_pos_x.size(); i++) {
+                for (int i = 0; i < in_pos_x.size(); i ++) {
                     float dist = (pos - Eigen::Vector2f(in_pos_x[i], in_pos_y[i])).squaredNorm();
                     if (dist < min_dist) {
                         min_dist = dist;
