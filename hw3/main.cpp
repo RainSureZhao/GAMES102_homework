@@ -443,5 +443,6 @@ int main()
         }
         EndFrame();
     }
+    Finalize();
     return 0;
 }
