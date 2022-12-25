@@ -340,9 +340,9 @@ int main()
                                                                        approx_m, l, r, step);
                 
                 approx_foley.in_pos_t = Utils::ParameterizationFoley(in_pos_x, in_pos_y);
-                approx_foley.pos_x = Utils::ApproximationPolygon(approx_foley.in_pos_t, in_pos_y,
+                approx_foley.pos_x = Utils::ApproximationPolygon(approx_foley.in_pos_t, in_pos_x,
                                                                  approx_m, l, r, step);
-                approx_foley.pos_y = Utils::ApproximationPolygon(approx_foley.in_pos_t, in_pos_x, 
+                approx_foley.pos_y = Utils::ApproximationPolygon(approx_foley.in_pos_t, in_pos_y, 
                                                                  approx_m, l, r, step);
                 approx_update = false;
             }

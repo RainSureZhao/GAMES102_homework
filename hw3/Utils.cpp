@@ -72,13 +72,57 @@ Utils::ApproximationPolygon(const std::vector<float> &pos_x, const std::vector<f
         }
         res.push_back(temp);
     }
-    // std::cout << res.size() << "\n";
     return res;
 }
 
 std::vector<float>
 Utils::CubicSpline(const std::vector<float> &pos_x, const std::vector<float> &pos_y, float l, float r, float step) {
-    return std::vector<float>();
+    int n = pos_x.size();
+    if(n == 1) return {0.0f};
+    std::vector<float> diff_x(n - 1);
+    for(int i = 0; i < n - 1; i ++) {
+        diff_x[i] = pos_x[i + 1] - pos_x[i];
+    }
+    std::vector<float> coe0(n), coe1(n), coe2(n), coe3(n);
+    for(int i = 0; i < n; i ++) coe0[i] = pos_y[i];
+    Eigen::MatrixXf A(n, n);
+    Eigen::VectorXf B(n);
+    
+    for(size_t i = 0; i < n; i ++) {
+        for(int j = 0; j < n; j ++) {
+            A(i, j) = 0.0f;
+        }
+        if(i == 0 || i == n - 1) {
+            A(i, i) = 1.0f;
+            B(i, 0) = 0.0f;
+        }else {
+            A(i, i) = 2 * (diff_x[i] + diff_x[i - 1]);
+            A(i, i + 1) = diff_x[i];
+            A(i, i - 1) = diff_x[i - 1];
+            B(i, 0) = 3.0f / diff_x[i] * (coe0[i + 1] - coe0[i]) - 3.0 / diff_x[i - 1] * (coe0[i] - coe0[i - 1]);
+        }
+    }
+
+    Eigen::VectorXf C = A.colPivHouseholderQr().solve(B);
+    for (int i = 0; i < n; i++) {
+        coe2[i] = C(i, 0);
+    }
+    for (int i = 0; i < n - 1; i++) {
+        coe3[i] = (coe2[i + 1] - coe2[i]) / 3.0 / diff_x[i];
+        coe1[i] = (coe0[i + 1] - coe0[i]) / diff_x[i] - coe2[i] * diff_x[i] - coe3[i] * diff_x[i] * diff_x[i];
+    }
+
+    size_t curr = 0;
+    std::vector<float> result;
+    for (float x = l; x <= r; x += step) {
+        if (x > pos_x[curr + 1]) {
+            ++curr;
+        }
+        float X = x - pos_x[curr];
+        float y = coe0[curr] + coe1[curr] * X + coe2[curr] * X * X + coe3[curr] * X * X * X;
+        result.push_back(y);
+    }
+    return result;
 }
 
 std::vector<float> Utils::ParameterizationUniform(const std::vector<float> &pos_x, const std::vector<float> &pos_y) {
@@ -152,13 +196,17 @@ std::vector<float> Utils::ParameterizationFoley(const std::vector<float> &pos_x,
     std::vector<float> diff(n);
     for(int i = 1; i < n; i ++) {
         diff[i - 1] = dist[i] * (1.0f + 1.5f * (angle[i - 1] * dist[i - 1]) / (dist[i - 1] + dist[i]) + 
-                1.5f * (angle[i] * dist[i + 1]) / (dist[i] * dist[i + 1]));
+                1.5f * (angle[i] * dist[i + 1]) / (dist[i] + dist[i + 1]));
         sum += diff[i - 1];
     }
     for(int i = 1; i < n - 1; i ++) {
         res[i] = diff[i - 1] / sum;
         res[i] += res[i - 1];
     }
+//    for(int i = 0; i < n; i ++) {
+//        std::cout << res[i] << ' ';
+//    }
+//    std::cout << "\n";
     res[n - 1] = 1.0f;
     return res;
 }

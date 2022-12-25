@@ -218,7 +218,7 @@ MathUtil::ParameterizationFoley(const std::vector<float> &pos_x, const std::vect
     }
     angle[0] = angle[n - 1] = 0.0f;
     float sum = 0.0f;
-    std::vector<float> diff(n - 1);
+    std::vector<float> diff(n );
     for (size_t i = 1; i < n; i++) {
         diff[i - 1] = dist[i] * (1.0f + 1.5f * (angle[i - 1] * dist[i - 1]) / (dist[i - 1] + dist[i]) +
             1.5f * (angle[i] * dist[i + 1]) / (dist[i] + dist[i + 1]));
