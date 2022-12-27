@@ -203,10 +203,6 @@ std::vector<float> Utils::ParameterizationFoley(const std::vector<float> &pos_x,
         res[i] = diff[i - 1] / sum;
         res[i] += res[i - 1];
     }
-//    for(int i = 0; i < n; i ++) {
-//        std::cout << res[i] << ' ';
-//    }
-//    std::cout << "\n";
     res[n - 1] = 1.0f;
     return res;
 }

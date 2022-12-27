@@ -1,0 +1,3 @@
+D:/Games102/hw4_test/cmake-build-debug/CMakeFiles/hw4_test.dir
+D:/Games102/hw4_test/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/Games102/hw4_test/cmake-build-debug/CMakeFiles/rebuild_cache.dir
